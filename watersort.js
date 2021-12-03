@@ -2,6 +2,7 @@
 
 const prompt = require("prompt-sync")();
 
+var move = [];
 var beakers = [];
 
 class Beaker {
@@ -11,7 +12,12 @@ class Beaker {
 }
 
 initBeakers();
-console.log(checkMove(1 - 1, 3 - 1));
+move = userDialogue();
+if (checkMove(move[0], move[1])) {
+  console.log("Okay!");
+} else {
+  console.log("This move is not allowed!");
+}
 
 function initBeakers() {
   beakers.push(new Beaker(1, 0, 0));
@@ -19,6 +25,20 @@ function initBeakers() {
   beakers.push(new Beaker(2, 1, 0));
 
   console.log(beakers);
+}
+
+function userDialogue() {
+  console.log("Welcome to Watersort!\nThis is the current situation:\n");
+
+  for (i = 0; i < beakers.length; i++) {
+    console.log("Beaker " + (i + 1) + ": " + beakers[i].slots);
+  }
+
+  const origin = prompt("Which Beaker do you want to move liquids from? ");
+
+  const destination = prompt("Which Beaker do you want to move liquids to? ");
+
+  return [origin - 1, destination - 1];
 }
 
 function sameLiquid(o, d) {
