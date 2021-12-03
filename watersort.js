@@ -1,6 +1,4 @@
-//require prompt-sync function from promt-sync node module to make working with CL input easier
-
-const prompt = require("prompt-sync")();
+const prompt = require("prompt-sync")(); //require prompt-sync function from promt-sync node module to make working with CL input easier
 
 var move = [];
 var beakers = [];
@@ -19,6 +17,8 @@ if (checkMove(move[0], move[1])) {
   console.log("This move is not allowed!");
 }
 
+//set up virtual representation of the beaker situation
+
 function initBeakers() {
   beakers.push(new Beaker(1, 0, 0));
   beakers.push(new Beaker(2, 1, 2));
@@ -26,6 +26,8 @@ function initBeakers() {
 
   console.log(beakers);
 }
+
+//get move from user
 
 function userDialogue() {
   console.log("Welcome to Watersort!\nThis is the current situation:\n");
@@ -40,6 +42,8 @@ function userDialogue() {
 
   return [origin - 1, destination - 1];
 }
+
+//check if the liquids are the same (or if the destination beaker is empty)
 
 function sameLiquid(o, d) {
   var oLiquid = undefined;
@@ -63,6 +67,8 @@ function sameLiquid(o, d) {
     return true;
   }
 }
+
+//check if there is enough space in the destination beaker
 
 function enoughSpace(o, d) {
   var volume = 0;
@@ -93,6 +99,8 @@ function enoughSpace(o, d) {
   }
 }
 
+//check if move is valid
+
 function checkMove(o, d) {
   if (enoughSpace(o, d) && sameLiquid(o, d)) {
     return true;
@@ -100,9 +108,3 @@ function checkMove(o, d) {
     return false;
   }
 }
-
-/*
-const test = prompt("Test \n");
-
-console.log(test);
-*/
