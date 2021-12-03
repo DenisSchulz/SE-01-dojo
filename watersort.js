@@ -2,7 +2,6 @@ const prompt = require("prompt-sync")(); //require prompt-sync function from pro
 
 var move = [];
 var beakers = [];
-var solvedS = false;
 
 class Beaker {
   constructor(s) {
@@ -14,7 +13,7 @@ initBeakers();
 
 console.log("Welcome to Watersort!\n");
 
-while (!solvedS) {
+while (endCheck() === 0) {
   move = userDialogue();
   if (checkMove(move[0], move[1])) {
     console.log("Okay!");
@@ -24,6 +23,14 @@ while (!solvedS) {
   }
 }
 
+if (endCheck() === 1) {
+  console.log("No moves possible. Game over.");
+} else if (endCheck() === 2) {
+  console.log("Congrats, you won! You are smart.");
+}
+
+process.exit();
+
 //set up virtual representation of the beaker situation
 
 function initBeakers() {
@@ -32,6 +39,43 @@ function initBeakers() {
   beakers.push(new Beaker([3, 2, 1, 3]));
   beakers.push(new Beaker([0, 0, 0, 0]));
   beakers.push(new Beaker([0, 0, 0, 0]));
+}
+
+function endCheck() {
+  if (solved()) {
+    return 2;
+  } else if (!movesPossible()) {
+    return 1;
+  } else {
+    return 0;
+  }
+}
+
+function solved() {
+  for (k = 0; k < beakers.length; k++) {
+    for (l = 0; l < beakers[k].slots.length - 1; l++) {
+      if (
+        beakers[k].slots[l] != beakers[k].slots[l + 1] &&
+        beakers[k].slots[l + 1] != 0
+      ) {
+        return false;
+      }
+    }
+  }
+  return true;
+}
+
+function movesPossible() {
+  for (k = 0; k < beakers.length; k++) {
+    for (l = 0; l < beakers.length; l++) {
+      if (k != l) {
+        if (checkMove(k, l)) {
+          return true;
+        }
+      }
+    }
+  }
+  return false;
 }
 
 //make move (only use after checkMove() !)
