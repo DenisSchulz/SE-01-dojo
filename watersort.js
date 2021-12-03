@@ -2,6 +2,7 @@ const prompt = require("prompt-sync")(); //require prompt-sync function from pro
 
 var move = [];
 var beakers = [];
+var solved = false;
 
 class Beaker {
   constructor(s1, s2, s3) {
@@ -10,11 +11,15 @@ class Beaker {
 }
 
 initBeakers();
-move = userDialogue();
-if (checkMove(move[0], move[1])) {
-  console.log("Okay!");
-} else {
-  console.log("This move is not allowed!");
+
+while (!solved) {
+  move = userDialogue();
+  if (checkMove(move[0], move[1])) {
+    console.log("Okay!");
+    makeMove(move[0], move[1]);
+  } else {
+    console.log("This move is not allowed!");
+  }
 }
 
 //set up virtual representation of the beaker situation
@@ -23,8 +28,32 @@ function initBeakers() {
   beakers.push(new Beaker(1, 0, 0));
   beakers.push(new Beaker(2, 1, 2));
   beakers.push(new Beaker(2, 1, 0));
+}
 
-  console.log(beakers);
+function makeMove(o, d) {
+  liquid = 0;
+  volume = 0;
+
+  for (i = 2; i >= 0; i--) {
+    if (beakers[o].slots[i] != 0) {
+      if (beakers[o].slots[i] === liquid || liquid === 0) {
+        liquid = beakers[o].slots[i];
+        volume += 1;
+        beakers[o].slots[i] = 0;
+      } else {
+        i = -1;
+      }
+    }
+  }
+
+  for (i = 0; i <= 2; i++) {
+    if (beakers[d].slots[i] === 0) {
+      for (j = 0; j < volume; j++) {
+        beakers[d].slots[i + j] = liquid;
+      }
+      i = 3;
+    }
+  }
 }
 
 //get move from user
