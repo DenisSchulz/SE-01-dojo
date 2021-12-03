@@ -12,6 +12,8 @@ class Beaker {
 
 initBeakers();
 
+console.log("Welcome to Watersort!\n");
+
 while (!solved) {
   move = userDialogue();
   if (checkMove(move[0], move[1])) {
@@ -29,6 +31,8 @@ function initBeakers() {
   beakers.push(new Beaker(2, 1, 2));
   beakers.push(new Beaker(2, 1, 0));
 }
+
+//make move (only use after checkMove() !)
 
 function makeMove(o, d) {
   liquid = 0;
@@ -59,7 +63,7 @@ function makeMove(o, d) {
 //get move from user
 
 function userDialogue() {
-  console.log("Welcome to Watersort!\nThis is the current situation:\n");
+  console.log("This is the current situation:\n");
 
   for (i = 0; i < beakers.length; i++) {
     console.log("Beaker " + (i + 1) + ": " + beakers[i].slots);
@@ -67,8 +71,15 @@ function userDialogue() {
 
   const origin = prompt("Which Beaker do you want to move liquids from? ");
 
+  if (origin == "exit") {
+    process.exit();
+  }
+
   const destination = prompt("Which Beaker do you want to move liquids to? ");
 
+  if (destination == "exit") {
+    process.exit();
+  }
   return [origin - 1, destination - 1];
 }
 
