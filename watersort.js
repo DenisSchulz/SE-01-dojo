@@ -11,7 +11,7 @@ class Beaker {
 }
 
 initBeakers();
-console.log(checkMove(1 - 1, 2 - 1));
+console.log(checkMove(1 - 1, 3 - 1));
 
 function initBeakers() {
   beakers.push(new Beaker(1, 0, 0));
@@ -19,6 +19,29 @@ function initBeakers() {
   beakers.push(new Beaker(2, 1, 0));
 
   console.log(beakers);
+}
+
+function sameLiquid(o, d) {
+  var oLiquid = undefined;
+  var dLiquid = undefined;
+
+  for (i = 2; i >= 0; i--) {
+    if (beakers[o].slots[i] != 0) {
+      oLiquid = beakers[o].slots[i];
+      i = -1;
+    }
+  }
+
+  for (i = 2; i >= 0; i--) {
+    if (beakers[d].slots[i] != 0) {
+      dLiquid = beakers[d].slots[i];
+      i = -1;
+    }
+  }
+
+  if (oLiquid === dLiquid || !dLiquid) {
+    return true;
+  }
 }
 
 function enoughSpace(o, d) {
@@ -51,7 +74,11 @@ function enoughSpace(o, d) {
 }
 
 function checkMove(o, d) {
-  return enoughSpace(o, d);
+  if (enoughSpace(o, d) && sameLiquid(o, d)) {
+    return true;
+  } else {
+    return false;
+  }
 }
 
 /*
